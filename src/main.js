@@ -12,30 +12,28 @@ class GameScene extends Phaser.Scene {
     // Create simple graphics for game assets
     const graphics = this.add.graphics();
 
-    // Knight sprite (blue armor)
+    // Knight sprite (blue armor) - 40x60 sprite
     graphics.fillStyle(0x3498db);
-    graphics.drawRect(0, 0, 40, 60);
+    graphics.fillRect(0, 0, 40, 60); // Body
     graphics.fillRect(5, 10, 30, 10); // Helmet
     graphics.fillRect(15, 15, 10, 5); // Sword hilt
     graphics.fillRect(12, 25, 10, 25); // Body
     graphics.fillRect(8, 35, 15, 3); // Sword
-    graphics.generateTexture('player', -20, -20, 60, 80);
+    graphics.generateTexture('player', 40, 60);
 
-    // Dragon sprite (red)
+    // Dragon sprite (red) - 40x50 sprite (flipped to face left)
     graphics.clear();
     graphics.fillStyle(0xe74c3c);
-    graphics.fillCircle(0, 20, 30); // Head
-    graphics.fillRect(-35, 15, 70, 40); // Body
-    graphics.fillCircle(-45, 25, 15); // Tail
-    graphics.fillRect(-55, 25, 15, 8); // Tail top
-    graphics.fillRect(-55, 33, 15, 8); // Tail bottom
-    graphics.generateTexture('dragon', -50, -25, 100, 80);
+    graphics.fillCircle(20, 25, 15); // Head
+    graphics.fillRect(5, 15, 30, 20); // Body
+    graphics.fillCircle(0, 25, 8); // Tail tip
+    graphics.generateTexture('dragon', 40, 50);
 
     // Ground
     graphics.clear();
     graphics.fillStyle(0x8b4513);
     graphics.fillRect(0, 0, 800, 32);
-    graphics.generateTexture('ground', 0, 0, 800, 32);
+    graphics.generateTexture('ground', 800, 32);
 
     graphics.destroy();
   }
@@ -46,7 +44,10 @@ class GameScene extends Phaser.Scene {
     this.player.setSize(40, 60).setOffset(10, 20);
 
     // Create ground
-    this.ground = this.physics.add.staticImage(400, 568, 'ground').setAllowGravity(false);
+    this.ground = this.physics.add.staticImage(400, 568, 'ground');
+
+    // Set up collision between player and ground
+    this.physics.add.collider(this.player, this.ground);
 
     // Player controls
     this.cursors = this.input.keyboard.createCursorKeys();
